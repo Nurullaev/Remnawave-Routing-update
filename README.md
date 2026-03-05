@@ -12,8 +12,8 @@
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/your-username/remnaroutingupd.git
-cd remnaroutingupd
+git clone https://github.com/lifeindarkside/Remnawave-Routing-update
+cd Remnawave-Routing-update
 cp .env.example .env
 ```
 

@@ -20,17 +20,21 @@ GITHUB_RAW_URL = os.environ.get(
 CHECK_INTERVAL = int(os.environ.get("CHECK_INTERVAL", "300"))  # seconds
 SSL_VERIFY = REMNA_BASE_URL.startswith("https://")
 
+REMNA_HEADERS = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {REMNA_TOKEN}",
+}
+
 if not SSL_VERIFY:
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    REMNA_HEADERS["X-Forwarded-Proto"] = "https"
+    REMNA_HEADERS["X-Forwarded-For"] = "127.0.0.1"
 
 
 def get_remna_settings() -> dict:
     resp = requests.get(
         REMNA_API_URL,
-        headers={
-            "Accept": "application/json",
-            "Authorization": f"Bearer {REMNA_TOKEN}",
-        },
+        headers=REMNA_HEADERS,
         timeout=30,
         verify=SSL_VERIFY,
     )
@@ -41,11 +45,7 @@ def get_remna_settings() -> dict:
 def patch_remna_settings(payload: dict) -> dict:
     resp = requests.patch(
         REMNA_API_URL,
-        headers={
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {REMNA_TOKEN}",
-        },
+        headers={**REMNA_HEADERS, "Content-Type": "application/json"},
         json=payload,
         timeout=30,
         verify=SSL_VERIFY,

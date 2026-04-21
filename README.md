@@ -19,7 +19,7 @@ mkdir remna-routing-updater && cd remna-routing-updater
 
 ### Внешняя панель (HTTPS)
 
-Создайте фччйл `.env`:
+Создайте файл `.env`:
 
 ```env
 REMNA_BASE_URL=https://your-host/api

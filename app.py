@@ -154,6 +154,19 @@ def main():
             except Exception:
                 log.exception("Error updating squad %s", squad["uuid"])
 
+        for squad in squads:
+            try:
+                deeplink = get_github_deeplink(squad["url"])
+                if deeplink != squad["current_routing"]:
+                    log.info("Routing changed for squad %s! Updating...", squad["uuid"])
+                    patch_external_squad(squad["uuid"], deeplink)
+                    squad["current_routing"] = deeplink
+                    log.info("Successfully updated happRouting for squad %s", squad["uuid"])
+                else:
+                    log.info("No changes detected for squad %s", squad["uuid"])
+            except Exception:
+                log.exception("Error updating squad %s", squad["uuid"])
+
         time.sleep(CHECK_INTERVAL)
 
 
